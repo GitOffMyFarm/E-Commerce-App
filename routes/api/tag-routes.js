@@ -2,14 +2,17 @@ const router = require('express').Router();
 const { Tag, Product, ProductTag, Category } = require('../../models');
 const { update } = require('../../models/Product');
 
-// The `/api/tags` endpoint
-
+//Confirmed
 router.get('/', async (req, res) => {
-  // find all tags
-  // be sure to include its associated Product data
   try {
     const tagData = await Tag.findAll({
-      include: [Product],
+      include: [
+        {
+          model: Product,
+          through: ProductTag,
+          as: 'product_assigned',
+        },
+      ],
     });
     res.status(200).json(tagData);
   } catch (err) {
@@ -17,12 +20,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+//Confirmed
 router.get('/:id', async (req, res) => {
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
   try {
     const tagData = await Tag.findByPk(req.params.id, {
-      include: [Product],
+      include: [
+        {
+          model: Product,
+          through: ProductTag,
+          as: 'product_assigned',
+        },
+      ],
     });
     if (!tagData) {
       res.status(404).json({ message: "The Tag You Are Trying To Find Does Not Exist" })
@@ -61,6 +69,7 @@ router.put('/:id', (req, res) => {
   .catch((err) => res.json(err));
 });
 
+//Confirmed
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   try {
@@ -73,7 +82,7 @@ router.delete('/:id', async (req, res) => {
       res.status(404).json({ message: 'The Tag You Are Trying to Delete Does Not Exist' });
       return;
     }
-    res.status(200).json(tagData);
+    res.status(200).json({ message: `Tag #${req.params.id} has been deleted` });
   } catch (err) {
     res.status(500).json(err);
   }

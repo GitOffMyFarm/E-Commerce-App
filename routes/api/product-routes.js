@@ -1,10 +1,8 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// get all products
+//Confirmed
 router.get('/', async (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
   try {
     const productData = await Product.findAll({
       include: [
@@ -22,10 +20,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// get one product
+//Confirmed
 router.get('/:id', async (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
   try {
     const productData = await Product.findByPk(req.params.id, {
       include: [
@@ -40,6 +36,7 @@ router.get('/:id', async (req, res) => {
     if (!productData) {
       res.status(404).json({ message: 'The Product You Are Looking For Does Not Exist' })
     };
+    res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -118,9 +115,8 @@ router.put('/:id', (req, res) => {
       res.status(400).json(err);
     });
 });
-
+//Confirmed
 router.delete('/:id', async (req, res) => {
-  // delete one product by its `id` value
   try {
     const productData = await Product.destroy({
       where: {
@@ -131,6 +127,7 @@ router.delete('/:id', async (req, res) => {
       res.status(404).json({ message: 'The Product You Are Trying To Delete Does Not Exist'});
       return;
     }
+    res.status(200).json({ message: `Item #${req.params.id} Has Been Deleted`});
   } catch (err) {
     res.status(500).json(err);
   }

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
-
+//confirmed
 router.get('/', async (req, res) => {
   try {
   const categoryData = await Category.findAll({
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     res.status(500).json(err);
   }
 });
-
+//confirmed
 router.get('/:id', async (req, res) => {
   try {
     const categoryData = await Category.findByPk(req.params.id, {
@@ -51,7 +51,7 @@ router.put('/:id', (req, res) => {
     })
     .catch((err) => res.json(err));
 });
-
+//confirmed
 router.delete('/:id', async (req, res) => {
   try {
     const categoryData = await Category.destroy({
@@ -63,7 +63,7 @@ router.delete('/:id', async (req, res) => {
       res.status(404).json({ message: 'The Category You Are Trying To Delete Does Not Exist' });
       return;
     }
-    res.status(200).json(categoryData);
+    res.status(200).json({message: `Category #${req.params.id} has been deleted.`});
   } catch (err) {
     res.status(500).json(err);
   }
