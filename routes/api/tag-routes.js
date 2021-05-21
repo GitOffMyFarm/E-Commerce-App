@@ -61,7 +61,6 @@ router.put('/:id', (req, res) => {
       where: {
         id: req.params.id,
       },
-      returning: true,
     },
   )
   .then((updatedTag) => {
